@@ -36,7 +36,7 @@
 const changeStatus = async(id, e) => {
 const auth = e.checked
 try {
-await axios.put("/skaters", {
+await axios.put("/skatersAuth", {
 id,auth })
 alert(auth ? "Usuario habilitado" : "usuario deshabilitado");
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const { nuevoSkater,getAuthSkater,getSkaters } = require('./bd/coneccion.js');
+const { nuevoSkater,getAuthSkater,getSkaters,skaterAuth } = require('./bd/coneccion.js');
 //const send = require('./correo.js');
 
 const exphbs = require("express-handlebars");
@@ -159,5 +159,20 @@ app.get('/Admin', async (req, res) => {
     } catch (e) {
         res.statusCode = 500;
         res.end("ocurrio un error en el servidor" + e);
+    }
+})
+
+
+
+app.put('/skatersAuth', async (req, res) => {
+    const values = req.body;
+    console.log(values);
+    try {
+        const result = await skaterAuth(values);
+        res.statusCode = 200;
+        res.end(JSON.stringify(result));
+    } catch (e) {
+        res.statusCode = 500;
+        res.end("ocurrio un error" + e);
     }
 })

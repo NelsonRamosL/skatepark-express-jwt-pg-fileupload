@@ -48,8 +48,17 @@ const getSkaters = async () => {
 }
 
 
+const skaterAuth = async (usuario) => {
+    const values = Object.values(usuario);
+ console.log(values);
+    const consulta = {
+        text: "UPDATE skaters SET estado=$2 WHERE id=$1 RETURNING *",
+        values
+    };
+    const result = await pool.query(consulta);
+    return result;
+}
 
 
 
-
-module.exports = { nuevoSkater,getAuthSkater,getSkaters }
+module.exports = { nuevoSkater,getAuthSkater,getSkaters,skaterAuth }
