@@ -1,2 +1,8 @@
 Readme 
-Pagina web 
+
+
+
+Inicio proceso de subir archivos...
+
+todavia no terminado.
+

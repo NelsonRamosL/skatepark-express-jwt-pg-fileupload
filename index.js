@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-//const { } = require('./bd/coneccion.js');
+const { nuevoSkater } = require('./bd/coneccion.js');
 //const send = require('./correo.js');
 
 const exphbs = require("express-handlebars");
@@ -50,3 +50,47 @@ app.get("/datos", function (req, res) {
 app.get("/registro", function (req, res) {
     res.render("Registro");
 });
+
+
+//  El sistema debe permitir registrar nuevos participantes.
+app.post('/agregar', async (req, res) => {
+    const { email,nombre,password,anos,especialidad } = req.body;
+    console.log( email,nombre,password,anos,especialidad)
+    // if (Object.keys(req.files).length == 0) {
+    //     return res.status(400).send("No se encontro ningun archivo en la consulta");
+    // }
+    const { foto } = req.files;
+    const { name } = foto;
+        
+console.log(foto,name)    
+foto.mv(`${__dirname}/public/img/${name}`, async(err) => {
+     if(err) return res.status(500).send({
+         error: `algo salio mal .... ${err}`,
+         code: 500
+     })
+    })
+const values = {
+    email,
+    nombre,
+    password,
+    anos,
+    especialidad,
+    name
+}
+
+
+    try {
+        const result = await nuevoSkater(values);
+        res.statusCode = 201;
+        res.end(JSON.stringify(result));
+    } catch (e) {
+        console.log("error" + e)
+        res.statusCode = 500;
+        res.end("ocurrio un error" + e);
+    }
+
+
+})
+
+
+
