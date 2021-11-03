@@ -51,11 +51,17 @@ app.get("/registro", function (req, res) {
     res.render("Registro");
 });
 
+app.get("/login", function (req, res) {
+    res.render("Login");
+});
+
+
 
 //  El sistema debe permitir registrar nuevos participantes.
 app.post('/agregar', async (req, res) => {
-    const { email,nombre,password,anos,especialidad } = req.body;
-    console.log( email,nombre,password,anos,especialidad)
+    const { email,nombre,password,password2,anos,especialidad } = req.body;
+    console.log( email,nombre,password,password2,anos,especialidad)
+    
     // if (Object.keys(req.files).length == 0) {
     //     return res.status(400).send("No se encontro ningun archivo en la consulta");
     // }
