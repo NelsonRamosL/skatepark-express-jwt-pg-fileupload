@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const { nuevoSkater,getAuthSkater,getSkaters,skaterAuth,getSkatersId,eliminarSkater,editarSkater } = require('./bd/coneccion.js');
+const { nuevoSkater, getAuthSkater, getSkaters, skaterAuth, getSkatersId, eliminarSkater, editarSkater } = require('./bd/coneccion.js');
 //const send = require('./correo.js');
 
 const exphbs = require("express-handlebars");
@@ -74,30 +74,30 @@ app.get("/login", function (req, res) {
 
 //  El sistema debe permitir registrar nuevos participantes.
 app.post('/agregar', async (req, res) => {
-    const { email,nombre,password,password2,anos,especialidad } = req.body;
-    console.log( email,nombre,password,password2,anos,especialidad)
-    
+    const { email, nombre, password, password2, anos, especialidad } = req.body;
+    console.log(email, nombre, password, password2, anos, especialidad)
+
     // if (Object.keys(req.files).length == 0) {
     //     return res.status(400).send("No se encontro ningun archivo en la consulta");
     // }
     const { foto } = req.files;
     const { name } = foto;
-        
-console.log(foto,name)    
-foto.mv(`${__dirname}/public/img/${name}`, async(err) => {
-     if(err) return res.status(500).send({
-         error: `algo salio mal .... ${err}`,
-         code: 500
-     })
+
+    console.log(foto, name)
+    foto.mv(`${__dirname}/public/img/${name}`, async (err) => {
+        if (err) return res.status(500).send({
+            error: `algo salio mal .... ${err}`,
+            code: 500
+        })
     })
-const values = {
-    email,
-    nombre,
-    password,
-    anos,
-    especialidad,
-    name
-}
+    const values = {
+        email,
+        nombre,
+        password,
+        anos,
+        especialidad,
+        name
+    }
 
 
     try {
@@ -120,9 +120,9 @@ const values = {
 // Verificar en base de datos y crear token
 app.post('/verify', async (req, res) => {
     const values = req.body;
-    console.log(values);
 
     const result = await getAuthSkater(values);
+    console.log(result);
 
     if (result) {
         if (result.estado) {
@@ -133,10 +133,10 @@ app.post('/verify', async (req, res) => {
                 },
                 secretKey
             );
-
-            //res.statusCode = 201;
+            //  res.statusCode = 201;
             res.send(token);
         } else {
+            console.log("error de autorizacion")
             res.status(401).send({
                 error: " este usuario no tiene autorizacion, Contacte al Administrador",
                 code: 401,
@@ -158,6 +158,7 @@ app.post('/verify', async (req, res) => {
 app.get('/Admin', async (req, res) => {
     try {
         const skaters = await getSkaters();
+        console.log(skaters)
         res.render('Admin', { skaters });
     } catch (e) {
         res.statusCode = 500;
@@ -198,20 +199,46 @@ app.get('/editarSkater/:id', async (req, res) => {
 
 
 
+app.get('/datosToken/:token', async (req, res) => {
+    const { token } = req.params;
+    console.log(token);
+    jwt.verify(token, secretKey, (err, data) => {
+        const { id, nombre, email, password, anos_experiencia, especialidad, foto, estado } = data.data;
+        const skaters = [{
+            id,
+            nombre,
+            email,
+            password,
+            anos_experiencia,
+            especialidad,
+            foto,
+            estado
+        }];
+        //   res.send( err ? "Token inválido" : data );
+        console.log(skaters);
+        res.render('Datos', {skaters} );
+    });
+
+
+})
+
+
+
+
 
 
 app.delete('/eliminar/:id', async (req, res) => {
     const { id } = req.params;
     console.log(id)
-try {
-    const result = await eliminarSkater(id);
-    res.statusCode = 201;
-    res.end(JSON.stringify(result));
-} catch (e) {
-    console.log("error" + e)
-    res.statusCode = 500;
-    res.end("ocurrio un error" + e);
-}
+    try {
+        const result = await eliminarSkater(id);
+        res.statusCode = 201;
+        res.end(JSON.stringify(result));
+    } catch (e) {
+        console.log("error" + e)
+        res.statusCode = 500;
+        res.end("ocurrio un error" + e);
+    }
 
 })
 

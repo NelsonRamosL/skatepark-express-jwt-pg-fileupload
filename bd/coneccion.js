@@ -30,13 +30,13 @@ const nuevoSkater = async (usuario) => {
 // consultar email y password para logear skater
 const getAuthSkater = async (skater) => {
     const values = Object.values(skater);
-    console.log(values);
+   // console.log(values);
        const consulta = {
            text: "SELECT * FROM skaters WHERE email = $1 AND password = $2",
            values
        };
        const result = await pool.query(consulta);
-    console.log(result)
+   // console.log(result)
     return result.rows[0];
 }
 

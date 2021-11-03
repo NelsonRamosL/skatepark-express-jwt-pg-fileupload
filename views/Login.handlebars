@@ -31,7 +31,7 @@ const payload = { email,password }
 try {
 const { data:token } = await axios.post('/verify', payload);
 alert('autentificacion y autorizacion exitosa!');
-window.location.href = `/evidencias?token=${token}`;
+window.location.href = `/datosToken/${token}`;
 } catch ({ response }){
 const { data } = response;
 const { error } = data;
