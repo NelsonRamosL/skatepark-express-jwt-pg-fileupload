@@ -73,13 +73,17 @@
 const actualizar = async () => {
 console.log("en actualizacion")
 const email = $('#email').val();
+const nombre = $('#nombre').val();
 const password = $('#password').val();
+const anos = $('#anos').val();
+const especialidad = $('#especialidad').val();
+const id = $('#id').val();
 
-const payload = { email,password }
+const payload = { email,nombre,password,anos,especialidad,id }
 try {
-const { data:token } = await axios.post('/verify', payload);
-alert('autentificacion y autorizacion exitosa!');
-window.location.href = `/evidencias?token=${token}`;
+await axios.put('/modificarSkater', payload);
+alert('Datos Modificados!');
+window.location.href = `/Admin`;
 } catch ({ response }){
 const { data } = response;
 const { error } = data;

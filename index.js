@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const { nuevoSkater,getAuthSkater,getSkaters,skaterAuth,getSkatersId,eliminarSkater } = require('./bd/coneccion.js');
+const { nuevoSkater,getAuthSkater,getSkaters,skaterAuth,getSkatersId,eliminarSkater,editarSkater } = require('./bd/coneccion.js');
 //const send = require('./correo.js');
 
 const exphbs = require("express-handlebars");
@@ -210,4 +210,22 @@ try {
     res.end("ocurrio un error" + e);
 }
 
+})
+
+
+
+
+
+
+app.put('/modificarSkater', async (req, res) => {
+    const values = req.body;
+    console.log(values);
+    try {
+        const result = await editarSkater(values);
+        res.statusCode = 200;
+        res.end(JSON.stringify(result));
+    } catch (e) {
+        res.statusCode = 500;
+        res.end("ocurrio un error" + e);
+    }
 })

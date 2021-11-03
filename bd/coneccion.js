@@ -76,4 +76,19 @@ const eliminarSkater = async (id) => {
 }
 
 
-module.exports = { nuevoSkater,getAuthSkater,getSkaters,skaterAuth,getSkatersId,eliminarSkater }
+
+const editarSkater = async (skater) => {
+    const values = Object.values(skater);
+ console.log(values);
+    const consulta = {
+        text: "UPDATE skaters SET email=$1, nombre=$2, password=$3, anos_experiencia=$4, especialidad=$5 WHERE id=$6 RETURNING *",
+        values
+    };
+    const result = await pool.query(consulta);
+    return result;
+}
+
+
+
+
+module.exports = { nuevoSkater,getAuthSkater,getSkaters,skaterAuth,getSkatersId,eliminarSkater,editarSkater }
