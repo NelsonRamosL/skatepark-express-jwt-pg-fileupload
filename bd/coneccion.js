@@ -61,4 +61,11 @@ const skaterAuth = async (usuario) => {
 
 
 
-module.exports = { nuevoSkater,getAuthSkater,getSkaters,skaterAuth }
+
+const getSkatersId = async (id) => {
+    const result = await pool.query(`SELECT * FROM skaters WHERE id=${id}`);
+    console.log(result.rows)
+    return result.rows;
+}
+
+module.exports = { nuevoSkater,getAuthSkater,getSkaters,skaterAuth,getSkatersId }

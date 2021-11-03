@@ -20,9 +20,9 @@
          {{#each skaters}}
 <tr>
 <td>{{@index}}</td>
-<td><img src="./img/{{this.foto}}" alt="{{this.nombre}}" width="100"></td>
+<td><a href="./editarSkater/{{this.id}}"> <img src="./img/{{this.foto}}" alt="{{this.nombre}}" width="100"></a></td>
 <td>{{this.nombre}}</td>
-<td>{{this.ano}}</td>
+<td>{{this.anos_experiencia}}</td>
 <td>{{this.especialidad}}</td>
 
 <td><input type="checkbox" {{#if this.estado}} checked {{/if}} onclick="changeStatus({{this.id}}, this)"></td>
