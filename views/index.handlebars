@@ -26,7 +26,8 @@
 <td>{{this.nombre}}</td>
 <td>{{this.anos_experiencia}}</td>
 <td>{{this.especialidad}}</td>
-<td>{{this.estado}}</td>
+<td>{{#if this.estado }}  Aprobado {{else}} En revision  {{/if }}
+</td>
 </tr>
 {{/each}}
         </tbody>

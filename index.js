@@ -103,7 +103,10 @@ const values = {
     try {
         const result = await nuevoSkater(values);
         res.statusCode = 201;
-        res.end(JSON.stringify(result));
+        res.redirect("/");
+        //res.render('index');
+        // res.end(JSON.stringify(result));
+
     } catch (e) {
         console.log("error" + e)
         res.statusCode = 500;

@@ -27,7 +27,7 @@ const nuevoSkater = async (usuario) => {
 
 
 
-// logear skater en la base de datos
+// consultar email y password para logear skater
 const getAuthSkater = async (skater) => {
     const values = Object.values(skater);
     console.log(values);
@@ -40,7 +40,7 @@ const getAuthSkater = async (skater) => {
     return result.rows[0];
 }
 
-
+// listar todos los Skaters
 const getSkaters = async () => {
     const result = await pool.query("SELECT * FROM skaters");
     console.log(result)
@@ -48,6 +48,7 @@ const getSkaters = async () => {
 }
 
 
+// cambiar estado del Skater
 const skaterAuth = async (usuario) => {
     const values = Object.values(usuario);
  console.log(values);
@@ -61,14 +62,14 @@ const skaterAuth = async (usuario) => {
 
 
 
-
+// seleccionar skater segun id
 const getSkatersId = async (id) => {
     const result = await pool.query(`SELECT * FROM skaters WHERE id=${id}`);
     console.log(result.rows)
     return result.rows;
 }
 
-
+// eliminar skater
 const eliminarSkater = async (id) => {
     console.log("en bd",id);
     const result = await pool.query(`DELETE FROM skaters WHERE id = ${id}`);
@@ -76,7 +77,7 @@ const eliminarSkater = async (id) => {
 }
 
 
-
+// editar skater
 const editarSkater = async (skater) => {
     const values = Object.values(skater);
  console.log(values);
