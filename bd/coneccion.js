@@ -10,7 +10,7 @@ const pool = new Pool({
 });
 
 
-
+// agregar nuevo skater
 const nuevoSkater = async (usuario) => {
     const values = Object.values(usuario);
     console.log(values);
@@ -22,4 +22,34 @@ const nuevoSkater = async (usuario) => {
     return result;
 }
 
-module.exports = { nuevoSkater }
+
+
+
+
+
+// logear skater en la base de datos
+const getAuthSkater = async (skater) => {
+    const values = Object.values(skater);
+    console.log(values);
+       const consulta = {
+           text: "SELECT * FROM skaters WHERE email = $1 AND password = $2",
+           values
+       };
+       const result = await pool.query(consulta);
+    console.log(result)
+    return result.rows[0];
+}
+
+
+const getSkaters = async () => {
+    const result = await pool.query("SELECT * FROM skaters");
+    console.log(result)
+    return result.rows;
+}
+
+
+
+
+
+
+module.exports = { nuevoSkater,getAuthSkater,getSkaters }

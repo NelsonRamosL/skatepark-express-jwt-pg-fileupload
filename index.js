@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const { nuevoSkater } = require('./bd/coneccion.js');
+const { nuevoSkater,getAuthSkater,getSkaters } = require('./bd/coneccion.js');
 //const send = require('./correo.js');
 
 const exphbs = require("express-handlebars");
@@ -37,9 +37,24 @@ app.engine(
 app.set("view engine", "handlebars");
 
 
-app.get("/", (req, res) => {
-    res.render("index");
-});
+
+
+
+app.get('/', async (req, res) => {
+    console.log("entramos en index")
+    try {
+        const skaters = await getSkaters();
+        res.render('index', { skaters });
+    } catch (e) {
+        res.statusCode = 500;
+        res.end("ocurrio un error en el servidor" + e);
+    }
+})
+
+
+
+
+
 
 
 
@@ -99,4 +114,50 @@ const values = {
 })
 
 
+// Verificar en base de datos y crear token
+app.post('/verify', async (req, res) => {
+    const values = req.body;
+    console.log(values);
 
+    const result = await getAuthSkater(values);
+
+    if (result) {
+        if (result.estado) {
+            const token = jwt.sign(
+                {
+                    exp: Math.floor(Date.now() / 1000) + 300,
+                    data: result,
+                },
+                secretKey
+            );
+
+            //res.statusCode = 201;
+            res.send(token);
+        } else {
+            res.status(401).send({
+                error: " este usuario no tiene autorizacion, Contacte al Administrador",
+                code: 401,
+            });
+        }
+
+
+
+    } else {
+        res.status(401).send({
+            error: "este usuario no esta registrado",
+            code: 401,
+        });
+    }
+})
+
+
+
+app.get('/Admin', async (req, res) => {
+    try {
+        const skaters = await getSkaters();
+        res.render('Admin', { skaters });
+    } catch (e) {
+        res.statusCode = 500;
+        res.end("ocurrio un error en el servidor" + e);
+    }
+})
