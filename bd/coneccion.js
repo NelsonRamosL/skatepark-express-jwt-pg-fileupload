@@ -68,4 +68,12 @@ const getSkatersId = async (id) => {
     return result.rows;
 }
 
-module.exports = { nuevoSkater,getAuthSkater,getSkaters,skaterAuth,getSkatersId }
+
+const eliminarSkater = async (id) => {
+    console.log("en bd",id);
+    const result = await pool.query(`DELETE FROM skaters WHERE id = ${id}`);
+    return result;
+}
+
+
+module.exports = { nuevoSkater,getAuthSkater,getSkaters,skaterAuth,getSkatersId,eliminarSkater }

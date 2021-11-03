@@ -10,18 +10,27 @@
             <label>Email</label>
             <input
               class="form-control m-auto"
+              name="email" id="email"
               disabled
               value="{{this.email}}"
+            />
+            <input
+              type="hidden"
+              name="id" id="id"
+              value="{{this.id}}"
             />
           </div>
           <div class="form-group col-12 col-sm-6">
             <label>Nombre</label>
-            <input class="form-control m-auto" value="{{this.nombre}}" />
+            <input class="form-control m-auto"
+            name="nombre" id="nombre"
+             value="{{this.nombre}}" />
           </div>
           <div class="form-group col-12 col-sm-6">
             <label>Password</label>
             <input
               type="password"
+              name="password" id="password"
               class="form-control m-auto"
               value="{{this.password}}"
             />
@@ -30,25 +39,71 @@
             <label>Repita la password</label>
             <input
               type="password"
+              name="password2" id="password2"
               class="form-control m-auto"
               value="{{this.password}}"
             />
           </div>
           <div class="form-group col-12 col-sm-6">
             <label>Años de experiencia</label>
-            <input class="form-control m-auto" value="{{this.anos_experiencia}}" />
+            <input class="form-control m-auto"
+            name="anos" id="anos"
+             value="{{this.anos_experiencia}}" />
           </div>
           <div class="form-group col-12 col-sm-6">
             <label>Especialidad</label>
-            <input class="form-control m-auto" value="{{this.especialidad}}" />
+            <input class="form-control m-auto"
+            name="especialidad" id="especialidad"
+             value="{{this.especialidad}}" />
           </div>
         </div>
-        {{/each}}
+        
         <div class="mb-1">
-          <button class="btn btn-primary">Actualizar</button>
+          <button class="btn btn-primary" onclick="actualizar()">Actualizar</button>
         </div>
         <div>
-          <button class="btn btn-danger">Eliminar cuenta</button>
+          <button class="btn btn-danger" onclick="eliminar()">Eliminar cuenta</button>
         </div>
       </form>
+      {{/each}}
     </div>
+
+
+ <script>
+const actualizar = async () => {
+console.log("en actualizacion")
+const email = $('#email').val();
+const password = $('#password').val();
+
+const payload = { email,password }
+try {
+const { data:token } = await axios.post('/verify', payload);
+alert('autentificacion y autorizacion exitosa!');
+window.location.href = `/evidencias?token=${token}`;
+} catch ({ response }){
+const { data } = response;
+const { error } = data;
+alert(error);
+}
+}
+
+
+
+const eliminar = async () => {
+const id = $('#id').val();
+try {
+await axios.delete(`/eliminar/${id}`);
+alert('usuario eliminado con exito');
+window.location.href = "/Admin";
+} catch ({ response }){
+const { data } = response;
+const { error } = data;
+alert(error);
+}
+
+
+
+}
+
+
+</script>
